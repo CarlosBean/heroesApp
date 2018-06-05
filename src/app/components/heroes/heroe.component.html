@@ -2,66 +2,101 @@
     Heroe:
     <small>{{heroe.nombre}}</small>
 </h3>
-<button
-    [routerLink]="['heroes']"
-    type="submit"
-    class="btn btn-outline-danger my-3"
->
+<button [routerLink]="['heroes']" type="submit" class="btn btn-outline-danger my-3">
     Regresar
 </button>
-<button
-    (click)="agregarNuevo( forma )"
-    type="button"
-    class="btn btn-outline-primary"
->
+<button (click)="agregarNuevo( forma )" type="button" class="btn btn-outline-primary">
     Nuevo Heroe
 </button>
 
 <div class="row animated fadeIn fast">
     <div class="col-md-12">
-        <form
-            (ngSubmit)="guardar()"
-            #forma="ngForm"
-        >
+        <form (ngSubmit)="guardar()" #forma="ngForm">
             <div class="form-group">
                 <label>Nombre</label>
-                <input
-                    [(ngModel)]="heroe.nombre"
-                    type="text"
-                    name="nombre"
-                    class="form-control"
-                    placeholder="Nombre del heroe"
-                    required
-                >
+                <input [ngModel]="heroe.nombre | regex:'letras'" (ngModelChange)="heroe.nombre=$event" type="text" name="nombre" class="form-control"
+                    placeholder="Nombre del heroe" required>
             </div>
             <div class="form-group">
                 <label>Casa</label>
-                <select
-                    [(ngModel)]="heroe.casa"
-                    name="casa"
-                    class="form-control"
-                >
+                <select [(ngModel)]="heroe.casa" name="casa" class="form-control">
                     <option value="Marvel">Marvel</option>
                     <option value="DC">DC</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Bio</label>
-                <textarea
-                    [(ngModel)]="heroe.bio"
-                    name="bio"
-                    type="text"
-                    class="form-control"
-                    required
-                ></textarea>
+                <textarea [(ngModel)]="heroe.bio" name="bio" type="text" class="form-control" required></textarea>
             </div>
-            <button
-                [disabled]="!forma.valid"
-                type="submit"
-                class="btn btn-outline-primary"
-            >
+
+            <button [disabled]="!forma.valid" type="submit" class="btn btn-outline-primary">
                 Guardar Cambios
             </button>
         </form>
     </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Validaciones con regex {{precio}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-6">
+                <label for>Con directiva</label>
+                <input appNumber type="text" class="form-control" name="precio" placeholder="$ 0.0" [(ngModel)]="probando" maxlength="10">
+            </div>
+            <div class="form-group col-6">
+                <label for>ngModel, ngModelChange, keypress, html y css</label>
+                <div class="left-inner-addon">
+                    <i class="icon-user">$</i>
+                    <input type="tel" class="form-control" name="precio" placeholder="0.0" [(ngModel)]="precio" (keypress)="validarCaracter($event)"
+                        (ngModelChange)="aplicarMascara()" maxlength="10">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-primary" (click)="parser()">
+            Parser
+        </button>
+        <button class="btn btn-outline-primary" (click)="transform()">
+            Transform
+        </button>
+        <button class="btn btn-outline-primary" (click)="prueba()">
+            Abrir modal
+        </button>
+    </div>
+</div>
+
+<div class="col-xs-6">
+
+
+    <div class="card mt-4">
+        <div class="card-header">
+            Directiva con evento de mouse
+        </div>
+        <div class="card-body">
+            <div class="custom-control custom-radio custom-control-inline" (click)="color='lightgreen'">
+                <input type="radio" id="green" name="colors" class="custom-control-input">
+                <label class="custom-control-label" for="green">Green</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline" (click)="color='yellow'">
+                <input type="radio" id="yellow" name="colors" class="custom-control-input">
+                <label class="custom-control-label" for="yellow">Yellow</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline" (click)="color='cyan'">
+                <input type="radio" id="cyan" name="colors" class="custom-control-input">
+                <label class="custom-control-label" for="cyan">Cyan</label>
+            </div>
+            <div class="mt-3">
+                <p [appHighlight]="color">Enfocame!</p>
+
+                <p [appHighlight]="color" defaultColor="violet">
+                    Enfocame tambien!
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
