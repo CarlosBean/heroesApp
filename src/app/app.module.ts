@@ -13,6 +13,8 @@ import { KeysPipe } from './pipes/keys.pipe';
 import { RegexPipe } from './pipes/regex.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { NumberDirective } from './directives/number.directive';
+import { RecaudosService } from './services/recaudos.service';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { NumberDirective } from './directives/number.directive';
     APP_ROUTING,
     ReactiveFormsModule
   ],
-  providers: [HeroesService],
+  providers: [HeroesService, RecaudosService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

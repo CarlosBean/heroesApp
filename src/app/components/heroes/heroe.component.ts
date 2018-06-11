@@ -1,16 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  NgForm,
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl
-} from '@angular/forms';
+import { NgForm, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Heroe } from '../../interfaces/heroe';
 import { HeroesService } from '../../services/heroes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NumberDirective } from '../../directives/number.directive';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { ReportePdf } from '../../classes/reportePdf';
+import { RecaudosService } from '../../services/recaudos.service';
 
 @Component({
   selector: 'app-heroe',
@@ -19,6 +17,9 @@ import { NumberDirective } from '../../directives/number.directive';
 export class HeroeComponent {
   precio: string;
   probando: string;
+  reportPdf: any;
+  esNuevo = false;
+  id: string;
 
   heroe: Heroe = {
     nombre: '',
@@ -26,15 +27,15 @@ export class HeroeComponent {
     casa: 'Marvel'
   };
 
-  esNuevo = false;
-  id: string;
-
   constructor(
     public heroesService: HeroesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private recaudosService: RecaudosService
   ) {
+    this.reportPdf = new ReportePdf(recaudosService).getDocDefinition();
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
     this.activatedRoute.params.subscribe(params => {
       console.log('Params', params);
       this.id = params['id'];
@@ -44,6 +45,11 @@ export class HeroeComponent {
         });
       }
     });
+  }
+
+  generarPDF() {
+    pdfMake.createPdf(this.reportPdf).open();
+    // pdfMake.createPdf(this.reportPdf).download('Reporte_recaudo');
   }
 
   agregarNuevo(forma: NgForm) {
