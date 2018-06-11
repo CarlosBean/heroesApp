@@ -43,7 +43,7 @@ export class ReportePdf {
             image: imagen base64,
             width: 35
           }, */
-          { margin: [0, 5, 0, 0], text: 'BNET RECAUDOS', italics: true }
+          { margin: [0, 5, 0, 0], text: 'COCO RECAUDOS', italics: true }
         ]
       },
       content: [
